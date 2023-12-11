@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="/styles.css" />
     <title>MyFlix</title>
     <style>
       * {
@@ -24,5 +30,136 @@
       Users can register, modify their personal information, and compile a list
       of their preferred movies.
     </p>
+    <br />
+    <h2>Supported Requests</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Request</th>
+          <th scope="col">URL</th>
+          <th scope="col">HTTP Method</th>
+          <th scope="col">Request body data format</th>
+          <th scope="col">Response body data format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Get list of movies</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>An array of JSON objects holding data about all the movies</td>
+        </tr>
+        <tr>
+          <td>Get list of movies by director</td>
+          <td>/movies/directors/[director name]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            An array of JSON objects holding data about all the movies by
+            requested director
+          </td>
+        </tr>
+        <tr>
+          <td>Get list of movies by year of release</td>
+          <td>/movies/releaseYear/[year]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            An array of JSON objects holding data about all the movies by
+            requested year of release
+          </td>
+        </tr>
+        <tr>
+          <td>Get list of movies by genre</td>
+          <td>/movies/genres/[genre]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            An array of JSON objects holding data about all the movies by
+            requested genre
+          </td>
+        </tr>
+        <tr>
+          <td>Get data about a single movie by title</td>
+          <td>/movies/[title]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about the requested movie like this:<br />
+            { 'id': '######',<br />
+            'title': 'Iron Man',<br />
+            'director': 'John Favreau',<br />
+            'release-year': '2008',<br />
+            'genre': 'action' }
+          </td>
+        </tr>
+        <tr>
+          <td>Add a movie</td>
+          <td>/movies</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about the movie to add, structured
+            like:<br />
+            { 'title': 'Iron Man',<br />
+            'director': 'John Favreau',<br />
+            'release-year': '2008',<br />
+            'genre': 'action' }
+          </td>
+          <td>
+            A JSON object holding data about the user that was added, including
+            an ID:<br />
+            { 'id': '######',<br />
+            'title': 'Iron Man',<br />
+            'director': 'John Favreau',<br />
+            'release-year': '2008',<br />
+            'genre': 'action' }
+          </td>
+        </tr>
+        <tr>
+          <td>Remove a movie by ID</td>
+          <td>/movies/id/[id]</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>
+            A text message indicating whether the movie was successfully removed
+          </td>
+        </tr>
+        <tr>
+          <td>Add a user</td>
+          <td>/users</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about the user to add, structured
+            like:<br />
+            { 'username': '[username]',<br />
+            'name': 'John Doe',<br />
+            'Birth-date': '01/01/1980',<br />
+            'favorited-movies': <br />
+            { 'movie': '[movie title]'} }
+          </td>
+          <td>
+            A JSON object holding data about the user that was added, including
+            an ID:<br />
+            { 'id': '######',<br />
+            'username': '[username]',<br />
+            'name': 'John Doe',<br />
+            'Birth-date': '01/01/1980',<br />
+            'favorited-movies': <br />
+            { 'movie': '[movie title]'} }
+          </td>
+        </tr>
+        <tr>
+          <td>Remove a movie from a user's favorites list</td>
+          <td>/users/[name]/[movie]</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>
+            A text message indicating whether the movie was successfully removed
+            from the user's favorited movies
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
