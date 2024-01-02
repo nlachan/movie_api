@@ -95,3 +95,5 @@ Timestamp: Sun Nov 19 2023 01:46:56 GMT-0800 (Pacific Standard Time)
 ::1 - - [11/Dec/2023:11:37:33 +0000] "GET /movies/Title/1994 HTTP/1.1" 404 156 "-" "PostmanRuntime/7.35.0"
 ::1 - - [11/Dec/2023:11:37:37 +0000] "GET /movies/Title/1994 HTTP/1.1" 404 156 "-" "PostmanRuntime/7.35.0"
 ::1 - - [11/Dec/2023:11:38:21 +0000] "GET /movies/Titles/1994 HTTP/1.1" 404 157 "-" "PostmanRuntime/7.35.0"
+::1 - - [31/Dec/2023:12:01:56 +0000] "GET /movie HTTP/1.1" 404 144 "-" "PostmanRuntime/7.36.0"
+::1 - - [31/Dec/2023:12:35:00 +0000] "GET /user HTTP/1.1" 404 143 "-" "PostmanRuntime/7.36.0"
