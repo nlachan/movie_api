@@ -34,6 +34,10 @@ app.use(
 app.use(bodyParser.json()); //any time using req.body, the data will be expected to be in JSON format
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// CORS in Express
+const cors = require("cors");
+app.use(cors());
+
 // Import auth.js
 let auth = require("./auth")(app);
 
