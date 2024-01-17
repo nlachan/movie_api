@@ -7,9 +7,6 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "engines": {
-    "node": "14.x"
-  },
   "author": "Naleen Lachan",
   "license": "ISC",
   "dependencies": {
