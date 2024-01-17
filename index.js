@@ -13,6 +13,8 @@ let allowedOrigins = [
   "http://localhost:8080",
   "http://testsite.com",
   "http://localhost:1234",
+  "https://lachan-movies-flix-0490bbdf7b92.herokuapp.com/",
+  "https://git.heroku.com/lachan-movies-flix.git",
 ];
 //allow specific set of origins to access your API
 app.use(
