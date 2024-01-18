@@ -7,14 +7,14 @@ const express = require("express"),
   cors = require("cors"),
   { check, validationResult } = require("express-validator");
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // CORS
 let allowedOrigins = [
   "http://localhost:8080",
   "http://testsite.com",
   "http://localhost:1234",
-  "https://git.heroku.com/naleen-movies-flix.git",
-  "https://naleen-movies-flix-8a1ae7a6e039.herokuapp.com/",
 ];
 //allow specific set of origins to access your API
 app.use(
@@ -55,19 +55,27 @@ const Models = require("./models.js");
 //const { validationResult } = require('express-validator');
 const Movies = Models.Movie;
 const Users = Models.User;
+const Genres = Models.Genre;
+const Directors = Models.Director;
 
-// mongoose.connect(process.env.CONNECTION_URI, {
-// useNewUrlParser: true,
-// useUnifiedTopology: true,
-// });
+// for online api
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// READ index page
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+//page endpoints start here
 app.get("/", (req, res) => {
-  res.send("Welcome to MyFlix!");
+  const path = require("path");
+  const indexPath = path.join(__dirname, "index.html");
+  res.sendFile(indexPath);
+  console.log("Welcome to MyFlix");
 });
 
 //CREATE a New user
