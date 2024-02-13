@@ -1,35 +1,38 @@
-const jwtSecret = "your_jwt_secret"; // This has to be the same key used in the JWTStrategy
-
-const jwt = require("jsonwebtoken"),
-  passport = require("passport");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 require("./passport"); // Your local passport file
 
-let generateJWTToken = (user) => {
-  return jwt.sign(user, jwtSecret, {
-    subject: user.Username, // This is the username you’re encoding in the JWT
-    expiresIn: "7d", // This specifies that the token will expire in 7 days
-    algorithm: "HS256", // This is the algorithm used to “sign” or encode the values of the JWT
+const jwtSecret = process.env.JWT_SECRET; // Load JWT secret from environment variable
+
+const generateJWTToken = (user) => {
+  // Sign only necessary user data (e.g., username or user ID)
+  const payload = {
+    username: user.Username,
+    // You can add more fields as needed
+  };
+
+  return jwt.sign(payload, jwtSecret, {
+    expiresIn: "7d", // Token expiration set to 7 days
+    algorithm: "HS256", // HS256 algorithm
   });
 };
 
-/* POST login. */
 module.exports = (router) => {
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
       if (error || !user) {
-        return res.status(400).json({
-          message: "Something is not right",
-          user: user,
+        // Provide specific error message or code for authentication failures
+        return res.status(401).json({
+          message: "Authentication failed",
+          error: error || "Invalid credentials",
         });
       }
       req.login(user, { session: false }, (error) => {
-        console.log("JWT Token:", token);
         if (error) {
-          res.send(error);
+          return res.status(500).json({ message: "Internal server error" });
         }
-        let token = generateJWTToken(user.toJSON());
-
+        const token = generateJWTToken(user);
         return res.json({ user, token });
       });
     })(req, res);
