@@ -3,7 +3,7 @@ const passport = require("passport");
 
 require("./passport"); // Your local passport file
 
-const jwtSecret = process.env.JWT_SECRET; // Load JWT secret from environment variable
+const jwtSecret = "your_jwt_secret"; // Load JWT secret from environment variable
 
 const generateJWTToken = (user) => {
   // Sign only necessary user data (e.g., username or user ID)
