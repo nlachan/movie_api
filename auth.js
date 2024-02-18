@@ -24,7 +24,7 @@ module.exports = (router) => {
       if (error || !user) {
         // Provide specific error message or code for authentication failures
         return res.status(401).json({
-          message: "Authentication failed",
+          message: "Authentication failed.error " + error + " user " + user,
           error: error || "Invalid credentials",
         });
       }
