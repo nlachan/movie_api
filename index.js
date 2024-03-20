@@ -15,6 +15,7 @@ let allowedOrigins = [
   "http://localhost:8080",
   "http://testsite.com",
   "http://localhost:1234",
+  "https://naleenmyflixapp.netlify.app/",
 ];
 //allow specific set of origins to access your API
 app.use(
