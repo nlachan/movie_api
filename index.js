@@ -34,18 +34,23 @@ app.use(
   })
 );
 
-app.use(bodyParser.json()); //any time using req.body, the data will be expected to be in JSON format
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 // Import auth.js
 let auth = require("./auth")(app);
+
+app.use(bodyParser.json()); //any time using req.body, the data will be expected to be in JSON format
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// log all requests
+app.use(morgan("common"));
 
 // Import passport and passport.js
 const passport = require("passport");
 require("./passport");
 
-// log all requests
-app.use(morgan("common"));
+//Load documentation page
+app.use(express.static("public"));
 
 // Require Mongoose models from models.js
 const Models = require("./models.js");
@@ -389,3 +394,9 @@ const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
   console.log("listening on port" + port);
 });
+
+// MongoDB connection error handling
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "MongoDB connection error:")
+);
