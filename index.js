@@ -4,8 +4,6 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   uuid = require("uuid"),
   mongoose = require("mongoose"),
-  Models = require("./models.js"),
-  path = require("path"),
   cors = require("cors"),
   { check, validationResult } = require("express-validator");
 
