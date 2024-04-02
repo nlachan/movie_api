@@ -103,8 +103,8 @@ app.post(
   ],
 
   async (req, res) => {
-    console.log("username" + JSON.stringify(req.body));
-    //check the validation object for errors
+    console.log("Username" + JSON.stringify(req.body));
+    //check the validation object for errorss
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
