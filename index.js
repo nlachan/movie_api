@@ -101,6 +101,7 @@ app.post(
     check("Password", "Password is required.").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
+
   async (req, res) => {
     console.log("username" + JSON.stringify(req.body));
     //check the validation object for errors
