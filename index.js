@@ -106,7 +106,7 @@ app.post(
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      console.log("422 error" + errors);
+      console.log("422 error" + JSON.stringify(errors));
       return res.status(422).json({ errors: errors.array() });
     }
 
