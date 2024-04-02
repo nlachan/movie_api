@@ -102,7 +102,7 @@ app.post(
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
-    console.log("username" + JSON.stringify(req.params));
+    console.log("username" + JSON.stringify(req.body));
     //check the validation object for errors
     let errors = validationResult(req);
 
