@@ -8,6 +8,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan"); // HTTP request logger middleware
+const fs = require("fs");
 const bodyParser = require("body-parser"); // Parse incoming request bodies in a middleware
 const uuid = require("uuid"); // For generating unique identifiers
 const path = require("path"); // Provides utilities for working with file and directory paths
@@ -105,59 +106,99 @@ app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await Movies.find()
-      .then((movies) => {
-        res.status(201).json(movies);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+    try {
+      // Fetch all movies
+      const movies = await Movies.find();
+
+      // Send the list of movies in the response
+      res.status(200).json(movies);
+    } catch (error) {
+      // Handle any errors that occur during the operation
+      console.error(error);
+      res.status(500).send("Error: " + error.message);
+    }
   }
 );
 
 //READ movie list by movie title
 app.get(
-  "/movies/:Title",
+  "/movies/:title/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await Movies.findOne({ Title: req.params.Title })
-      .then((movie) => {
-        res.json(movie);
-      })
-      .catch((err) => {
-        res.status(500).send("Error: " + err);
-      });
+    try {
+      // Query the database to find the movie by title
+      const movie = await Movies.findOne({ title: req.params.title });
+
+      // If the movie is found, send its data in the response
+      if (movie) {
+        res.status(200).json(movie);
+      } else {
+        // If the movie is not found, send a 404 Not Found response
+        res.status(404).send("Movie not found");
+      }
+    } catch (error) {
+      // Handle any errors that occur during the operation
+      console.error(error);
+      res.status(500).send("Error: " + error.message);
+    }
   }
 );
 
 //READ genre by name
 app.get(
-  "/movies/genres/:Genre",
+  "/genres/:name/",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Genre.Name": req.params.Genre })
-      .then((movie) => {
-        res.status(200).json(movie.Genre.Description);
-      })
-      .catch((err) => {
-        res.status(500).send("Error: " + err);
-      });
+  async (req, res) => {
+    try {
+      // Query the database to find a movie with the specified genre
+      const movie = await Movies.findOne({ "genres.name": req.params.name });
+
+      // If the movie is found, find the genre with the specified name
+      if (movie) {
+        const genre = movie.genres.find((genre) => {
+          return genre.name.toLowerCase() === req.params.name.toLowerCase();
+        });
+
+        // If the genre is found, send its description in the response
+        if (genre) {
+          res.status(200).json({ description: genre.description });
+        } else {
+          // If the genre is not found, send a 404 Not Found response
+          res.status(404).send("Genre not found.");
+        }
+      } else {
+        // If the movie is not found, send a 404 Not Found response
+        res.status(404).send("Movie not found.");
+      }
+    } catch (error) {
+      // Handle any errors that occur during the operation
+      console.error(error);
+      res.status(500).send("Error: " + error.message);
+    }
   }
 );
 
 // READ director by name
 app.get(
-  "/movies/directors/:Director",
+  "/directors/:name",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Director.Name": req.params.Director })
-      .then((movie) => {
-        res.status(200).json(movie.Director);
-      })
-      .catch((err) => {
-        res.status(500).send("Error: " + err);
-      });
+  async (req, res) => {
+    try {
+      // Query the database to find a movie with the specified director
+      const movie = await Movies.findOne({ "director.name": req.params.name });
+
+      // If the movie is found, send the director's information in the response
+      if (movie) {
+        res.status(200).json(movie.director);
+      } else {
+        // If the movie is not found, send a 404 Not Found response
+        res.status(404).send("Director not found.");
+      }
+    } catch (error) {
+      // Handle any errors that occur during the operation
+      console.error(error);
+      res.status(500).send("Error: " + error.message);
+    }
   }
 );
 
