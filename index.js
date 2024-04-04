@@ -69,7 +69,7 @@ app.use(morgan("common"));
 // Define the endpoint for '/'
 app.get("/", (req, res) => {
   // Send the index.html file
-  res.sendFile(indexPath);
+  res.send("Welcome to my movie page!");
 });
 
 // READ user list
