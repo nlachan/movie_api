@@ -66,24 +66,11 @@ require("./passport"); // Passport strategies
 // log all requests
 app.use(morgan("common"));
 
-// Import passport and passport.js
-const passport = require("passport");
-require("./passport");
-
-//Load documentation page
-app.use(express.static("public"));
-
 // Require Mongoose models from models.js
 const Models = require("./models.js");
 //const { validationResult } = require('express-validator');
 const Movies = Models.Movie;
 const Users = Models.User;
-
-// mongoose connection
-mongoose
-  .connect(process.env.CONNECTION_URI) // Connection URI from environment variable
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Error connecting to MongoDB", err));
 
 // Define the endpoint for '/'
 app.get("/", (req, res) => {
