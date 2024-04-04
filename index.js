@@ -66,12 +66,6 @@ require("./passport"); // Passport strategies
 // log all requests
 app.use(morgan("common"));
 
-// Require Mongoose models from models.js
-const Models = require("./models.js");
-//const { validationResult } = require('express-validator');
-const Movies = Models.Movie;
-const Users = Models.User;
-
 // Define the endpoint for '/'
 app.get("/", (req, res) => {
   // Send the index.html file
