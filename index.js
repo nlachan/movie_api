@@ -6,7 +6,6 @@
  */
 
 const express = require("express");
-const app = express();
 const morgan = require("morgan"); // HTTP request logger middleware
 const fs = require("fs");
 const bodyParser = require("body-parser"); // Parse incoming request bodies in a middleware
@@ -18,6 +17,10 @@ const Models = require("./models.js"); // Import schemas and models
 
 const Movie = Models.Movie; // Destructure Movie model
 const User = Models.User; // Destructure User model
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const bcrypt = require("bcrypt"); // Library for hashing passwords
 
