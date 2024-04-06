@@ -27,10 +27,10 @@ const bcrypt = require("bcrypt"); // Library for hashing passwords
 const { check, validationResult } = require("express-validator"); // Validation and sanitization middleware
 
 // mongoose connection
-mongoose
-  .connect(process.env.CONNECTION_URI) // Connection URI from environment variable
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Error connecting to MongoDB", err));
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -109,75 +109,48 @@ app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    try {
-      // Fetch all movies
-      const movies = await Movies.find();
-
-      // Send the list of movies in the response
-      res.status(200).json(movies);
-    } catch (error) {
-      // Handle any errors that occur during the operation
-      console.error(error);
-      res.status(500).send("Error: " + error.message);
-    }
+    await Movies.find()
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
   }
 );
 
 //READ movie list by movie title
 app.get(
-  "/movies/:title/",
+  "/movies/:title",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    try {
-      // Query the database to find the movie by title
-      const movie = await Movies.findOne({ title: req.params.title });
-
-      // If the movie is found, send its data in the response
-      if (movie) {
-        res.status(200).json(movie);
-      } else {
-        // If the movie is not found, send a 404 Not Found response
-        res.status(404).send("Movie not found");
-      }
-    } catch (error) {
-      // Handle any errors that occur during the operation
-      console.error(error);
-      res.status(500).send("Error: " + error.message);
-    }
+    await Movies.findOne({ Title: req.params.title })
+      .then((movie) => {
+        res.json(movie);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
   }
 );
 
 //READ genre by name
 app.get(
-  "/genres/:name/",
+  "/genres/:name",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    try {
-      // Query the database to find a movie with the specified genre
-      const movie = await Movies.findOne({ "genres.name": req.params.name });
+    await Movies.findOne({ "Genre.Name": req.params.name })
+      .then((movie) => {
+        console.log(movie);
 
-      // If the movie is found, find the genre with the specified name
-      if (movie) {
-        const genre = movie.genres.find((genre) => {
-          return genre.name.toLowerCase() === req.params.name.toLowerCase();
-        });
-
-        // If the genre is found, send its description in the response
-        if (genre) {
-          res.status(200).json({ description: genre.description });
-        } else {
-          // If the genre is not found, send a 404 Not Found response
-          res.status(404).send("Genre not found.");
-        }
-      } else {
-        // If the movie is not found, send a 404 Not Found response
-        res.status(404).send("Movie not found.");
-      }
-    } catch (error) {
-      // Handle any errors that occur during the operation
-      console.error(error);
-      res.status(500).send("Error: " + error.message);
-    }
+        res.status(200).json(movie.Genre);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
   }
 );
 
@@ -186,22 +159,14 @@ app.get(
   "/directors/:name",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    try {
-      // Query the database to find a movie with the specified director
-      const movie = await Movies.findOne({ "director.name": req.params.name });
-
-      // If the movie is found, send the director's information in the response
-      if (movie) {
-        res.status(200).json(movie.director);
-      } else {
-        // If the movie is not found, send a 404 Not Found response
-        res.status(404).send("Director not found.");
-      }
-    } catch (error) {
-      // Handle any errors that occur during the operation
-      console.error(error);
-      res.status(500).send("Error: " + error.message);
-    }
+    await Movies.findOne({ "Director.Name": req.params.name })
+      .then((movie) => {
+        res.status(200).json(movie.Director);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
   }
 );
 
