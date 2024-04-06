@@ -39,6 +39,7 @@ let allowedOrigins = [
   "http://testsite.com",
   "http://localhost:1234",
   "https://lachanmyflix.netlify.app",
+  "https://naleen-movies-flix-8a1ae7a6e039.herokuapp.com",
 ];
 
 //allow specific set of origins to access your API
